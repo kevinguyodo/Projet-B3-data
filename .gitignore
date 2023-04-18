@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /data/clean_db.db
 /data/initial_db.db
 /idea
@@ -5,3 +6,6 @@
 /Scripts
 /Lib
 pyvenv.cfg
+=======
+/.idea
+>>>>>>> main
