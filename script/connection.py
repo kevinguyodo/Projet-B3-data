@@ -16,19 +16,15 @@ class Connection:
         self.init_db()
         # Connect to database
         new_conn = sqlite3.connect("./data/clean_db.db")
-        conn = new_conn.cursor()
-        return conn, new_conn
+        return new_conn
 
     def get_data_from_csv(self):
-        db_conn, db_new_conn = self.connect()
-        users = pd.read_csv('./data/Drug_clean.csv', nrows=15)
-        users.to_sql('drug', con=db_new_conn)
-        my_data = db_new_conn.execute('''SELECT * FROM drug''').fetchall()
-        print(my_data[1])
-        # print(db_new_conn.execute('''SELECT * FROM drug''').fetchall())
-        # print(users.head())
-
-        # users.head()
-    # def disconnect(self):
-    #     sqlite3.
-    #     pass
+        # Get database connection
+        db_new_conn = self.connect()
+        # Read CSV file, separate data to format their, and skip first rows => columns1, columns2 ...
+        drug_data_csv = pd.read_csv('./data/Drug_clean.csv', sep = ';', skiprows=[0])
+        # Insert data in Database
+        drug_data_csv.to_sql('drug', con=db_new_conn, if_exists= 'append')
+        # First select request
+        all_data = db_new_conn.execute('''SELECT * FROM drug''').fetchall()
+        print(all_data)
