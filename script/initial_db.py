@@ -17,17 +17,19 @@ class InitialDBConnection:
         return new_conn
 
     def get_data_from_csv(self):
-        # Get database connection
-        db_new_conn = self.connect()
-        # Read CSV file, separate data to format their, and skip first rows => columns1, columns2 ...
-        drug_data_csv = pd.read_csv('./data/Drug.csv', sep = ';', skiprows=[0])
-        # Insert data in Database
-        drug_data_csv.to_sql('originaldrug', con=db_new_conn, if_exists= 'replace')
-        # First select request
-        all_data = db_new_conn.execute('''SELECT * FROM originaldrug''').fetchall()
-        print(all_data)
+        try:
+            # Get database connection
+            db_new_conn = self.connect()
+            # Read CSV file, separate data to format their, and skip first rows => columns1, columns2 ...
+            drug_data_csv = pd.read_csv('./data/Drug.csv', sep = ';', skiprows=[0])
+            # Insert data in Database
+            drug_data_csv.to_sql('originaldrug', con=db_new_conn, if_exists= 'replace')
+            # First select request to prevent user
+            all_data = db_new_conn.execute('''SELECT * FROM originaldrug''').fetchall()
+            if all_data:
+                print("Base de donnée 'originaldrug' créée, et donnée insérée")
+            else:
+                print("Base de donnée 'originaldrug' créée mais donnée non insérée")
 
-    # def get_description(self):
-    #     init_db_data = self.connect()
-    #     init_db_description = init_db_data.execute('''SELECT * FROM originaldrug''').fetchall()
-    #     print(init_db_description)
+        except:
+            print("Quelque chose ne s'est pas passé comme prévu")

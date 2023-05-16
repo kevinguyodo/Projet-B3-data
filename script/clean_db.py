@@ -3,8 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 class CleanDBConnection:
-    def __init__(self, conn):
-        self.conn = conn
+    def __init__(self):
         pass
 
     # Create db file in data folder, if it doesn't exist
@@ -18,18 +17,18 @@ class CleanDBConnection:
         return new_conn
 
     def get_data_from_csv(self):
-        # Get database connection
-        db_new_conn = self.connect()
-        # Read CSV file, separate data to format their, and skip first rows => columns1, columns2 ...
-        drug_data_csv = pd.read_csv('./data/Drug_clean.csv', sep = ';', skiprows=[0])
-        # Insert data in Database
-        drug_data_csv.to_sql('cleandrug', con=db_new_conn, if_exists= 'append')
-        # First select request
-        all_data = db_new_conn.execute('''SELECT * FROM cleandrug''').fetchall()
-        print(all_data)
-
-    def get_description(self):
-        init_db_data = self.connect()
-        init_db_description = init_db_data.execute('''SELECT Description FROM cleandrug WHERE Description IS NOT NULL''').fetchall()
-        print(init_db_description)
-        pass
+        try:
+            # Get database connection
+            db_new_conn = self.connect()
+            # Read CSV file, separate data to format their, and skip first rows => columns1, columns2 ...
+            drug_data_csv = pd.read_csv('./data/Drug_clean.csv', sep=';', skiprows=[0])
+            # Insert data in Database
+            drug_data_csv.to_sql('cleandrug', con=db_new_conn, if_exists='replace')
+            # First select request to prevent user
+            all_data = db_new_conn.execute('''SELECT * FROM cleandrug''').fetchall()
+            if all_data:
+                print("Base de donnée 'cleandrug' créée, et donnée insérée")
+            else:
+                print("Base de donnée 'cleandrug' créée mais donnée non insérée")
+        except:
+            print("Quelque chose ne s'est passé comme prévu")
