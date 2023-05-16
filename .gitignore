@@ -1,7 +1,9 @@
 /data/clean_db.db
 /data/initial_db.db
+/idea
 /Include
 /Scripts
 /Lib
 pyvenv.cfg
-/.idea
+data/final_drug.csv
+data/final_db.db
