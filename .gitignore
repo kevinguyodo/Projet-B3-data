@@ -6,3 +6,4 @@
 /Lib
 pyvenv.cfg
 data/final_drug.csv
+data/final_db.db
