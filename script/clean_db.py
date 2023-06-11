@@ -31,4 +31,4 @@ class CleanDBConnection:
             else:
                 print("Base de donnée 'cleandrug' créée mais donnée non insérée")
         except:
-            print("Quelque chose ne s'est passé comme prévu")
+            print("Quelque chose ne s'est pas passé comme prévu")
